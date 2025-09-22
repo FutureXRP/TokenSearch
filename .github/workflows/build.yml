@@ -1,31 +1,28 @@
-<script type="text/plain" data-filename=".github/workflows/build.yml">name: Build news.json
-
+name: Build news.json
 on:
-push:
-branches: [ main ]
-schedule:
-- cron: '17 3 * * *' # daily at 03:17 UTC
-workflow_dispatch: {}
-
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '17 3 * * *' # daily at 03:17 UTC
+  workflow_dispatch: {}
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Checkout
-uses: actions/checkout@v4
-- name: Use Node
-uses: actions/setup-node@v4
-with:
-node-version: '20'
-- name: Install deps
-run: npm ci || npm i
-- name: Build news JSON
-run: npm run build
-- name: Commit updated JSON
-run: |
-git config user.name "github-actions"
-git config user.email "actions@users.noreply.github.com"
-git add public/news.json
-git commit -m "chore: update news.json" || echo "No changes to commit"
-git push
-</script>
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci || npm i
+      - name: Build news JSON
+        run: npm run build
+      - name: Commit updated JSON
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add public/news.json
+          git commit -m "chore: update news.json" || echo "No changes to commit"
+          git push
