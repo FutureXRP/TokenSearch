@@ -1,0 +1,45 @@
+<script type="text/plain" data-filename="index.html"><!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crypto News Search</title>
+<meta name="description" content="Type any crypto and see articles from the past 12 months" />
+<!-- Tailwind via CDN (fine for static sites) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+</head>
+<body class="bg-neutral-50 text-neutral-900 antialiased">
+<main class="mx-auto max-w-5xl p-6">
+<header class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+<h1 class="text-2xl font-semibold tracking-tight">Crypto News Search</h1>
+<p class="text-sm text-neutral-600">Type any crypto (e.g., XRP, XDC, SOL) to filter the last 12 months of headlines.</p>
+</header>
+
+<div class="mb-6 flex w-full gap-3">
+<input id="q" placeholder="Search token, ticker, or project (e.g., XRP)" class="flex-1 rounded-2xl border border-neutral-300 bg-white px-4 py-3 text-base shadow-sm outline-none focus:border-neutral-400" />
+<button id="searchBtn" class="rounded-2xl bg-black px-5 py-3 text-white shadow-sm">Search</button>
+</div>
+
+<div class="mb-3 text-sm text-neutral-700">
+<span id="meta">Loading…</span>
+</div>
+
+<ul id="list" class="grid grid-cols-1 gap-4"></ul>
+
+<div id="pager" class="mt-6 flex items-center justify-center gap-3 hidden">
+<button id="prevBtn" class="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-sm disabled:opacity-50">Prev</button>
+<span id="pageLabel" class="text-sm"></span>
+<button id="nextBtn" class="rounded-xl border border-neutral-300 bg-white px-3 py-2 text-sm disabled:opacity-50">Next</button>
+</div>
+
+<footer class="mt-10 text-center text-xs text-neutral-500">
+Sources: public RSS feeds (CoinDesk, CoinTelegraph, Decrypt, Bitcoin Magazine, more). Headlines/snippets link to the original publishers.
+</footer>
+</main>
+<script src="assets/main.js"></script>
+</body>
+</html></script>
