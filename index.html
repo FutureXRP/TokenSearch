@@ -8,23 +8,27 @@
   <!-- Tailwind via CDN (fine for static sites) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900 antialiased">
-  <main class="mx-auto max-w-6xl p-6">
-    <header class="mb-8">
+  <main class="mx-auto max-w-4xl p-4 sm:p-6">
+    <header class="mb-6">
       <h1 class="text-3xl font-bold tracking-tight text-gray-800">Crypto News Search</h1>
       <p class="mt-2 text-sm text-gray-600">Enter any cryptocurrency (e.g., BTC, ETH, SOL) to view relevant articles from the past year.</p>
     </header>
-    <div class="mb-8">
-      <input id="q" placeholder="Search by token, ticker, or project (e.g., Bitcoin, $ETH, Solana)" class="w-full rounded-full border border-gray-300 bg-white px-6 py-4 text-base shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
+    
+    <!-- Search input always visible -->
+    <div class="mb-6">
+      <input id="q" placeholder="Search by token, ticker, or project (e.g., Bitcoin, $ETH, Solana)" 
+             class="w-full rounded-full border border-gray-300 bg-white px-6 py-4 text-base shadow-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" />
     </div>
+    
     <div class="mb-4 text-sm text-gray-600">
       <span id="meta">Loading articles…</span>
     </div>
-    <ul id="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"></ul>
+    <ul id="list" class="space-y-4"></ul>
     <div id="pager" class="mt-8 flex items-center justify-center gap-4 hidden">
       <button id="prevBtn" class="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition">Previous</button>
       <span id="pageLabel" class="text-sm text-gray-600"></span>
