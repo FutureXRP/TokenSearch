@@ -11,26 +11,40 @@ const prevBtn = $('prevBtn')
 const nextBtn = $('nextBtn')
 const pageLabel = $('pageLabel')
 const q = $('q')
+
 async function loadData() {
   try {
+    console.log('Fetching news.json...') // Debug log
     const res = await fetch('public/news.json?_=' + Date.now())
-    if (!res.ok) throw new Error('Failed to load data')
+    if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to load data`)
     const data = await res.json()
     ALL = Array.isArray(data.items) ? data.items : []
+    console.log(`Loaded ${ALL.length} articles`) // Debug log
     filtered = ALL
     page = 1
     render()
   } catch (e) {
-    meta.textContent = 'Error loading articles. Please try refreshing the page.'
-    console.error(e)
+    console.error('Load error:', e) // Debug log
+    meta.textContent = `Error loading articles: ${e.message}. Try refreshing or check if the build ran. Showing empty results for now.`
+    ALL = []
+    filtered = []
+    renderFallback()
   }
 }
+
+function renderFallback() {
+  // Basic render even on error
+  list.innerHTML = ''
+  pager.classList.add('hidden')
+}
+
 function matchesQuery(it, needle) {
   if (!needle) return true
   const n = needle.trim().toLowerCase()
   const hay = [it.title, it.contentSnippet].join(' ').toLowerCase()
   return hay.includes(n) || hay.includes('$' + n) || hay.includes('(' + n + ')')
 }
+
 function render() {
   const total = filtered.length
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
@@ -38,7 +52,7 @@ function render() {
   const start = (page - 1) * PAGE_SIZE
   const slice = filtered.slice(start, start + PAGE_SIZE)
   meta.textContent = total
-    ? `Showing ${start + 1}–${start + slice.length} of ${total} articles from the past year${q.value ? ` matching "${q.value}"` : ''}.`
+    ? `Showing ${start + 1}–${Math.min(start + slice.length, total)} of ${total} articles from the past year${q.value ? ` matching "${q.value}"` : ''}.`
     : 'No matching articles found. Try broader terms like BTC, Ethereum, or DeFi.'
   list.innerHTML = slice
     .map((it) => {
@@ -66,6 +80,7 @@ function render() {
     pager.classList.add('hidden')
   }
 }
+
 function escapeHtml(str = '') {
   return str
     .replaceAll('&', '&amp;')
@@ -74,6 +89,7 @@ function escapeHtml(str = '') {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;')
 }
+
 function debounce(fn, ms) {
   let timeout
   return (...args) => {
@@ -81,16 +97,19 @@ function debounce(fn, ms) {
     timeout = setTimeout(() => fn(...args), ms)
   }
 }
+
 const runSearchDebounced = debounce(() => {
   const needle = q.value
   filtered = ALL.filter((it) => matchesQuery(it, needle))
   page = 1
   render()
 }, 300)
+
 // Events
 q.addEventListener('input', runSearchDebounced)
 q.addEventListener('keydown', (e) => { if (e.key === 'Enter') runSearchDebounced() })
-prevBtn.addEventListener('click', () => { page = Math.max(1, page - 1); render() })
-nextBtn.addEventListener('click', () => { page = page + 1; render() })
+if (prevBtn) prevBtn.addEventListener('click', () => { page = Math.max(1, page - 1); render() })
+if (nextBtn) nextBtn.addEventListener('click', () => { page = page + 1; render() })
+
 // Kickoff
 loadData()
